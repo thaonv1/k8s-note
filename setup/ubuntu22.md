@@ -1,8 +1,8 @@
 # Cài đặt K8s trên ubuntu 22
 
 Mô hình:
-- 1 Master
-- 2 Worker
+- 1 Master: IP 10.10.240.71
+- 2 Worker: IP 10.10.240.72/73
 
 ## Cài đặt trên tất cả các node
 
@@ -19,7 +19,7 @@ Set file hosts
 ```
 cat << EOF > /etc/hosts
 127.0.0.1 localhost
-127.0.1.1 worker01
+127.0.1.1 $HOSTNAME
 10.10.240.71 master
 10.10.240.72 worker01
 10.10.240.73 worker02
