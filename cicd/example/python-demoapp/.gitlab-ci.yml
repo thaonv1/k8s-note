@@ -1,0 +1,25 @@
+stages:
+  - test
+  - build
+
+run_tests:
+  stage: test
+  image: python:3.9-slim-buster
+  before_script:
+    - apt-get update && apt-get install make git -y
+  script:
+    - make test
+
+build_image:
+  stage: build
+  image: docker:27.1.2
+  services:
+    - name: docker:27.1.2-dind
+      command: ["--insecure-registry=http://172.16.99.102:5000"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker build -t demoapp:python-app-1 .
+    - docker tag demoapp:python-app-1 172.16.99.102:5000/demoapp:python-app-1
+    - docker push 172.16.99.102:5000/demoapp:python-app-1
